@@ -1,7 +1,10 @@
 import numpy as np
 
+# NOTE: This is written and tested in Python 3.5
 
-DataMatrix = np.matrix(((0, 0), (-1, -1), (-2, -2), (1, 1), (2, 2)))
+# DataMatrix = np.matrix(((0, 0), (-1, -1), (-2, -2), (1, 1), (2, 2)))
+# DataMatrix = np.matrix(((0, -0.1, 0.1), (1, -0.1, 0.1), (2, -0.1, 0.1), (-1, -0.1, 0.1), (-2, -0.1, 0.1)))
+DataMatrix = np.matrix(((0, 0, 0.1), (1, 1, 0.1), (2, 2, 0.1), (-1, -1, 0.1), (-2, -2, 0.1)))
 
 def PCA(DataMatrix):
     numsamples = DataMatrix.shape[0]
@@ -20,9 +23,12 @@ def PCA(DataMatrix):
 
     # Set to unit variance
     for j in range(numfeatures):
-        sigma = np.sqrt(np.sum(np.power(DataMatrix[:,j],2))/numsamples)
-        for i in range(numsamples):
-            DataMatrixnorm[i, :] = DataMatrix[i, j]/sigma
+        sigma = np.sqrt(np.sum(np.power(DataMatrixnorm[:, j], 2))/numsamples)
+        if sigma == 0.0:
+            DataMatrixnorm[:, j] = np.matrix(np.zeros((numsamples, 1)))
+        else:
+            for i in range(numsamples):
+                DataMatrixnorm[i, j] = DataMatrixnorm[i, j]/sigma
 
     # Calculate Covariance
     # Covar = [[0 for col in range(numfeatures)] for row in range(numfeatures)]

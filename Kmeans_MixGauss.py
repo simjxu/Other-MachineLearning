@@ -2,6 +2,8 @@ import numpy as np
 from scipy.stats import multivariate_normal
 from sklearn.cluster import KMeans
 
+# NOTE: This is written and tested in Python 3.5
+
 # Training Matrix (will have to convert a .csv file to matrix
 TrainMatrix = np.matrix(((0.0, 0.0), (0.0, 1.0), (1.0, 0.0), (1.0, 1.0), (4.0, 4.0), (4.0, 5.0), (5.0, 4.0), (5.0, 5.0),
                          (8.0, 8.0), (8.0, 9.0), (9.0, 8.0), (9.0, 9.0)))
@@ -77,7 +79,7 @@ def Kmeans_MixGauss(TrainMatrix, numclusters, numiterations):
 
             # Update Sigma
             for i in range(numtrainexamples):
-                Sigma[n] = Sigma[n] + w[n, i]*np.transpose(TrainMatrix[i, :] - Mu[n, :])*(TrainMatrix[i, :] - Mu[n, :])
+                Sigma[n] = Sigma[n] + w[n, i]*np.transpose(TrainMatrix[i, :]-Mu[n, :])*(TrainMatrix[i, :] - Mu[n, :])
             Sigma[n] = np.divide(Sigma[n], np.sum(w[n, :]))
 
         iter += 1
