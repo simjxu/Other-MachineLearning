@@ -23,7 +23,7 @@ def PCA(DataMatrix):
 
     # Set to unit variance
     for j in range(numfeatures):
-        sigma = np.sqrt(np.sum(np.power(DataMatrixnorm[:, j], 2))/numsamples)
+        sigma = np.sqrt(np.sum(np.power(DataMatrix[:, j], 2))/numsamples)
         if sigma == 0.0:
             DataMatrixnorm[:, j] = np.matrix(np.zeros((numsamples, 1)))
         else:
