@@ -18,19 +18,17 @@ def init_weights(shape):
     weights = tf.random_normal(shape, stddev=0.1)
     return tf.Variable(weights)
 
-def forwardprop(X, w_1, w_2):
+def forwardprop(A, B):
     """
     Forward-propagation.
     IMPORTANT: yhat is not softmax since TensorFlow's softmax_cross_entropy_with_logits() does that internally.
     """
     # The sigmoid function
-    h    = tf.nn.sigmoid(tf.matmul(X, w_1))
+    h    = tf.nn.sigmoid(tf.matmul(A, B))
 
     # # Alternative function using ReLU
     # h    = tf.nn.relu(tf.matmul(X, w_1))
-
-    yhat = tf.matmul(h, w_2)  # The \varphi function
-    return yhat
+    return h
 
 def get_iris_data():
     """ Read the iris data set and split them into training and test sets """
@@ -75,14 +73,12 @@ def main():
     w_f = init_weights((h_size, y_size))
 
     # Setup Forward propagation with a (additional) hidden layer
-    y_1     = forwardprop(X, w_1, w_2)
-
-    # Setup Forward propagation with a (additional) hidden layer
-    y_2 = forwardprop(y_1, w_2, w_3)
-
+    y_1     = forwardprop(X, w_1)
+    y_2     = forwardprop(y_1, w_2)
+    y_f     = forwardprop(y_2, w_3)
     # Setup Forward propagation for FINAL hidden layer
     # Prop with a sigmoid function or ReLU
-    yhat    = forwardprop(y_2, w_3, w_f)
+    yhat    = forwardprop(y_2, w_f)
     predict = tf.argmax(yhat, axis=1)
 
     # Setup Backward propagation
@@ -101,7 +97,7 @@ def main():
     init = tf.global_variables_initializer()
     sess.run(init)
 
-    for epoch in range(100):
+    for epoch in range(1000):
         # Train with each example
         for i in range(len(train_X)):
             sess.run(updates, feed_dict={X: train_X[i: i + 1], y: train_y[i: i + 1]})

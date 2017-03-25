@@ -11,9 +11,9 @@ from sklearn.model_selection import train_test_split
 
 # Enter number of nodes in each fully connected layer
 # h_size is a list that holds the number of nodes in each layer
-h_size = [256, 256]
-num_epochs = 1
-RANDOM_SEED = 42
+h_size = [80, 20, 3, 20, 80]
+num_epochs = 100
+RANDOM_SEED = 60
 tf.set_random_seed(RANDOM_SEED)
 ############################################################################
 # Change the following function to get the data that you are using
@@ -46,19 +46,17 @@ def init_weights(shape):
     weights = tf.random_normal(shape, stddev=0.1)
     return tf.Variable(weights)
 
-def forwardprop(X, w_1, w_2):
+def forwardprop(A, B):
     """
     Forward-propagation.
     IMPORTANT: yhat is not softmax since TensorFlow's softmax_cross_entropy_with_logits() does that internally.
     """
-    # The sigmoid function
-    h    = tf.nn.sigmoid(tf.matmul(X, w_1))
+    # # The sigmoid function
+    # h    = tf.nn.sigmoid(tf.matmul(A, B))
 
-    # # Alternative function using ReLU
-    # h    = tf.nn.relu(tf.matmul(X, w_1))
-
-    yhat = tf.matmul(h, w_2)  # The \varphi function
-    return yhat
+    # Alternative function using ReLU
+    h    = tf.nn.relu(tf.matmul(A, B))
+    return h
 
 def main():
     # Get the Iris data
@@ -81,28 +79,29 @@ def main():
     # Weight initializations
     # Initialize weights randomly. Weights go in between layers (input layer, output layer)
     layer_size = [x_size] + h_size + [y_size]
-    ys = [0 for row in range(len(h_size))]                        # num outputs equal total num hidden layers
-    wts = [0 for row in range(len(h_size)+1)]                     # num wt columns equals num hidden layers + 1
+    ys = [0. for row in range(len(h_size))]                        # num outputs equal total num hidden layers
+    wts = [0. for row in range(len(h_size)+1)]                     # num wt columns equals num hidden layers + 1
     for i in range(len(h_size)+1):
         wts[i] = init_weights((layer_size[i], layer_size[i+1]))
-        if i == 1:
-            ys[0] = forwardprop(X, wts[0], wts[1])
-        elif i > 1:
-            ys[i-1] = forwardprop(ys[i - 2], wts[i-1], wts[i])
+        if i == 0:
+            ys[0] = forwardprop(X, wts[0])
+        elif i == len(ys):
+            yhat = tf.matmul(ys[i - 1], wts[i])
+        else:
+            ys[i] = forwardprop(ys[i - 1], wts[i])
 
     # Prediction is on the FINAL layer output
-    yhat    = ys[len(ys)-1]
     predict = tf.argmax(yhat, axis=1)
 
     # Setup Backward propagation
     cost    = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y, logits=yhat))
 
-    # Set up training using Gradient Descent Optimizer
-    updates = tf.train.GradientDescentOptimizer(0.01).minimize(cost)
-
     # # Set up training using Gradient Descent Optimizer
-    # # Alternative setup using ADAM Optimizer
-    # updates = tf.train.AdamOptimizer(0.001).minimize(cost)
+    # updates = tf.train.GradientDescentOptimizer(0.005).minimize(cost)
+
+    # Set up training using Gradient Descent Optimizer
+    # Alternative setup using ADAM Optimizer
+    updates = tf.train.AdamOptimizer(0.005).minimize(cost)
 
     # Run SGD: Stochastic Gradient Descent
     # Begin the C tensorflow session

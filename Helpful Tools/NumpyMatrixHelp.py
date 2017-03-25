@@ -10,6 +10,9 @@ import sklearn
 # Create a 2D matrix
 x = np.matrix(((2, 3), (3, 5)))
 y = np.matrix(((1, 2), (5, -1)))
+print(x)
+print(x[0,0])
+print(type(x))
 
 # Show the size of the matrix
 # print(x.shape[1])
@@ -63,7 +66,7 @@ for j in range(1):
 asdf = [[0 for col in range(3)] for row in range(3)]
 for i in range(1):
     asdf[i][i] = 1
-print(enumerate(asdf))
+
 # # print(Sigma)
 # km = KMeans(n_clusters=3)
 # km.fit(TrainMatrix)
@@ -76,16 +79,16 @@ print(enumerate(asdf))
 #     print(iter)
 #     iter = iter+1
 
-PDF = np.matrix(np.zeros((numclusters,1)))
+# PDF = np.matrix(np.zeros((numclusters,1)))
 
-newmat = np.matrix(np.zeros((2,1)))
-newmat = Mu[0, :]
-newmat2 = Mu[0, :]
-Mu2 = Mu.tolist()
-PDF[0] = multivariate_normal.pdf(TrainMatrix[0, :], mean=Mu2[0], cov=Sigma[0][:][:])
+# newmat = np.matrix(np.zeros((2,1)))
+# newmat = Mu[0, :]
+# newmat2 = Mu[0, :]
+# Mu2 = Mu.tolist()
+# PDF[0] = multivariate_normal.pdf(TrainMatrix[0, :], mean=Mu2[0], cov=Sigma[0][:][:])
 
 
-# Testing out PCA -------------------------------------
-DataMatrix = np.matrix(((0, 0), (5, 1), (5, -1), (4, 1), (-3, 0)))
-
-w, v = np.linalg.eig(np.diag((1, 2, 3)))
+# # Testing out PCA -------------------------------------
+# DataMatrix = np.matrix(((0, 0), (5, 1), (5, -1), (4, 1), (-3, 0)))
+#
+# w, v = np.linalg.eig(np.diag((1, 2, 3)))

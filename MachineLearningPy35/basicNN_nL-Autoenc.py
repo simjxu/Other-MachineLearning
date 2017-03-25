@@ -7,17 +7,18 @@ Use a simple feedforward neural network with a single hidden layer to predict th
 import tensorflow as tf
 import numpy as np
 import json
+import math
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
 # Enter number of nodes in each fully connected layer
 # h_size is a list that holds the number of nodes in each layer
-h_size = [64, 8, 64]
-num_epochs = 10
-RANDOM_SEED = 42
+h_size = [64, 4, 64]
+num_epochs = 10000
+RANDOM_SEED = 55
 tf.set_random_seed(RANDOM_SEED)
 
-jfile = open("data/measurement_data_40_L3_z.json", "r")
+jfile = open("C:\\Users\\Simon\\Documents\\Data\\measurement_data_40_L3_z.json", "r")
 json_dict = json.loads(jfile.read())
 ############################################################################
 # Change the following function to get the data that you are using
@@ -28,8 +29,8 @@ def json_pull():
     train_mat will be the input matrix which we would like to add features to
     featrs will be a tuple of features we would like to add to the training matrix.
     """
-    num_meas = 500  # len(json_dict['measurements'])
-    num_feat = 10
+    num_meas = 1000  # len(json_dict['measurements'])
+    num_feat = 8
 
     # Define the training set
     trainmatx = np.matrix([[0.0 for col in range(num_feat)] for row in range(num_meas)])
@@ -38,13 +39,11 @@ def json_pull():
         trainmatx[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['p2p']
         trainmatx[i, 1] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
         trainmatx[i, 2] = json_dict['measurements'][i]['data']['z']['time_domain_features']['peak']
-        trainmatx[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][100]
-        trainmatx[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][200]
-        trainmatx[i, 5] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][300]
-        trainmatx[i, 6] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][400]
-        trainmatx[i, 7] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][500]
-        trainmatx[i, 8] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][600]
-        trainmatx[i, 9] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][700]
+        trainmatx[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_1x']
+        trainmatx[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_2x']
+        trainmatx[i, 5] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
+        trainmatx[i, 6] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
+        trainmatx[i, 7] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x_to_10x_sum']
 
     nanarr = []
     for i in range(trainmatx.shape[0]):
@@ -52,14 +51,13 @@ def json_pull():
             if math.isnan(trainmatx[i, j]):
                 nanarr.append(i)
                 break
-    datamat = np.delete(trainmatx, nanarr, axis=0)
+    trainmatx = np.delete(trainmatx, nanarr, axis=0)
 
     # Define the test set
-    trainmaty = trainmatx
-    testmatx = trainmatx
-    testmaty = trainmatx
+    all_X = trainmatx
+    all_Y = trainmatx
 
-    return trainmatx, testmatx, trainmaty, testmaty
+    return train_test_split(all_X, all_Y, test_size=0.33, random_state=RANDOM_SEED)
 
 def select_features(feature_str):
     """ 4097 frequency bins in the frequency array """
@@ -71,7 +69,6 @@ def normalize(train_matrix):
     train_matrix /= np.std(train_matrix, axis=0)
 
     return train_matrix
-
 
 def init_weights(shape):
     """ Weight initialization """
@@ -125,7 +122,7 @@ def main():
     predict = yhat
 
     # Setup Backward propagation
-    cost    = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y, logits=yhat))
+    cost    = tf.reduce_mean(abs(y-yhat))
 
     # Set up training using Gradient Descent Optimizer
     updates = tf.train.GradientDescentOptimizer(0.01).minimize(cost)
@@ -145,22 +142,30 @@ def main():
         for i in range(len(train_X)):
             sess.run(updates, feed_dict={X: train_X[i: i + 1], y: train_y[i: i + 1]})
 
+        output_train = sess.run(predict, feed_dict={X: train_X, y: train_y})
+        output_test = sess.run(predict, feed_dict={X: test_X, y: test_y})
+        train_accuracy = np.ndarray.mean(1 - abs(output_train - train_X))
         # train_accuracy = np.mean(np.argmax(train_y, axis=1) ==
         #                          sess.run(predict, feed_dict={X: train_X, y: train_y}))
-        # test_accuracy  = np.mean(np.argmax(test_y, axis=1) ==
-        #                          sess.run(predict, feed_dict={X: test_X, y: test_y}))
+        test_accuracy  = np.ndarray.mean(1 - abs(output_test - test_X))
 
-        train_accuracy = train_y/sess.run(predict, feed_dict={X: train_X, y: train_y}))
-        test_accuracy = np.mean(np.argmax(test_y, axis=1) ==
-                            sess.run(predict, feed_dict={X: test_X, y: test_y}))
+        # train_accuracy = train_y/sess.run(predict, feed_dict={X: train_X, y: train_y}))
+        # test_accuracy = np.mean(np.argmax(test_y, axis=1) ==
+        #                     sess.run(predict, feed_dict={X: test_X, y: test_y}))
+        if epoch%49==0:
+            print("Epoch = %d, train accuracy = %.2f%%, test accuracy = %.2f%%"
+                  % (epoch + 1, 100. * train_accuracy, 100. * test_accuracy))
 
-        print("Epoch = %d, train accuracy = %.2f%%, test accuracy = %.2f%%"
-              % (epoch + 1, 100. * train_accuracy, 100. * test_accuracy))
-
-    # # Save the weights if you would like into a csv file. Need to write an eval function
-    # weights1 = w_1.eval()
-    # np.savetxt('weights1.csv', weights1, fmt='%.18e', delimiter=',')
-    # sess.close()
+    # Save the weights if you would like into a csv file. Need to write an eval function
+    weights0 = wts[0].eval()
+    weights1 = wts[1].eval()
+    weights2 = wts[2].eval()
+    weights3 = wts[3].eval()
+    np.savetxt('weights0.csv', weights0, fmt='%.18e', delimiter=',')
+    np.savetxt('weights1.csv', weights1, fmt='%.18e', delimiter=',')
+    np.savetxt('weights2.csv', weights2, fmt='%.18e', delimiter=',')
+    np.savetxt('weights3.csv', weights3, fmt='%.18e', delimiter=',')
+    sess.close()
 
 
 if __name__ == '__main__':
