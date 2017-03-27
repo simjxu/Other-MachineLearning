@@ -1,5 +1,5 @@
 """
-Iris dataset has three classification classes: setosa(1), virginica(2), versicolor(3)
+Iris dataset has three classification classes:
 Set has 150 samples, 4 features each
 Use a simple feedforward neural network with a single hidden layer to predict the class
 4 input nodes ---> hidden layer ---> hidden layer ---> .... ---> 3 output nodes
@@ -13,8 +13,8 @@ from sklearn.model_selection import train_test_split
 
 # Enter number of nodes in each fully connected layer
 # h_size is a list that holds the number of nodes in each layer
-h_size = [64, 4, 64]
-num_epochs = 10000
+h_size = [8]
+num_epochs = 15000
 RANDOM_SEED = 55
 tf.set_random_seed(RANDOM_SEED)
 
@@ -29,22 +29,19 @@ def json_pull():
     train_mat will be the input matrix which we would like to add features to
     featrs will be a tuple of features we would like to add to the training matrix.
     """
-    num_meas = 1000  # len(json_dict['measurements'])
-    num_feat = 8
+    num_meas = len(json_dict['measurements'])
+    num_feat = 700
 
     # Define the training set
     trainmatx = np.matrix([[0.0 for col in range(num_feat)] for row in range(num_meas)])
-    print(trainmatx.shape)
     for i in range(num_meas):
-        trainmatx[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['p2p']
-        trainmatx[i, 1] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
-        trainmatx[i, 2] = json_dict['measurements'][i]['data']['z']['time_domain_features']['peak']
-        trainmatx[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_1x']
-        trainmatx[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_2x']
-        trainmatx[i, 5] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
-        trainmatx[i, 6] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
-        trainmatx[i, 7] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x_to_10x_sum']
+        # trainmatx[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['p2p']
+        # trainmatx[i, 1] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
+        # trainmatx[i, 2] = json_dict['measurements'][i]['data']['z']['time_domain_features']['peak']
+        for j in range(num_feat):
+            trainmatx[i, j] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][j]
 
+    # Identify the NaNs in the matrix
     nanarr = []
     for i in range(trainmatx.shape[0]):
         for j in range(num_feat):
@@ -52,6 +49,19 @@ def json_pull():
                 nanarr.append(i)
                 break
     trainmatx = np.delete(trainmatx, nanarr, axis=0)
+
+    # Identify and remove all columns that have the same value
+    zerostdarr = []
+    for i in range(trainmatx.shape[1]):
+        for j in range(num_meas):
+            if j != 0 and trainmatx[j, i] == trainmatx[j-1, i]:
+                if j == num_meas-1:
+                    zerostdarr.append(i)
+            elif trainmatx[j, i] != trainmatx[j-1,i]:
+                break
+    trainmatx = np.delete(trainmatx, zerostdarr, axis=1)
+    print("Number of measurements:", trainmatx.shape[0], "Number of features:", trainmatx.shape[1])
+
 
     # Define the test set
     all_X = trainmatx
@@ -152,19 +162,20 @@ def main():
         # train_accuracy = train_y/sess.run(predict, feed_dict={X: train_X, y: train_y}))
         # test_accuracy = np.mean(np.argmax(test_y, axis=1) ==
         #                     sess.run(predict, feed_dict={X: test_X, y: test_y}))
-        if epoch%49==0:
+
+        if epoch%50==0:
             print("Epoch = %d, train accuracy = %.2f%%, test accuracy = %.2f%%"
                   % (epoch + 1, 100. * train_accuracy, 100. * test_accuracy))
 
     # Save the weights if you would like into a csv file. Need to write an eval function
-    weights0 = wts[0].eval()
-    weights1 = wts[1].eval()
-    weights2 = wts[2].eval()
-    weights3 = wts[3].eval()
-    np.savetxt('weights0.csv', weights0, fmt='%.18e', delimiter=',')
-    np.savetxt('weights1.csv', weights1, fmt='%.18e', delimiter=',')
-    np.savetxt('weights2.csv', weights2, fmt='%.18e', delimiter=',')
-    np.savetxt('weights3.csv', weights3, fmt='%.18e', delimiter=',')
+    # weights0 = wts[0].eval()
+    # weights1 = wts[1].eval()
+    # weights2 = wts[2].eval()
+    # weights3 = wts[3].eval()
+    # np.savetxt('weights0.csv', weights0, fmt='%.18e', delimiter=',')
+    # np.savetxt('weights1.csv', weights1, fmt='%.18e', delimiter=',')
+    # np.savetxt('weights2.csv', weights2, fmt='%.18e', delimiter=',')
+    # np.savetxt('weights3.csv', weights3, fmt='%.18e', delimiter=',')
     sess.close()
 
 
