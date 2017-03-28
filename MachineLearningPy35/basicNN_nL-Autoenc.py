@@ -8,14 +8,13 @@ import tensorflow as tf
 import numpy as np
 import json
 import math
-from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
 # Enter number of nodes in each fully connected layer
 # h_size is a list that holds the number of nodes in each layer
-h_size = [8]
+h_size = [512, 128, 512]
 num_epochs = 15000
-RANDOM_SEED = 55
+RANDOM_SEED = 37
 tf.set_random_seed(RANDOM_SEED)
 
 jfile = open("C:\\Users\\Simon\\Documents\\Data\\measurement_data_40_L3_z.json", "r")
@@ -30,7 +29,7 @@ def json_pull():
     featrs will be a tuple of features we would like to add to the training matrix.
     """
     num_meas = len(json_dict['measurements'])
-    num_feat = 700
+    num_feat = 517
 
     # Define the training set
     trainmatx = np.matrix([[0.0 for col in range(num_feat)] for row in range(num_meas)])
