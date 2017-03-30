@@ -1,6 +1,5 @@
 """
-Iris dataset has three classification classes:
-Set has 150 samples, 4 features each
+Autoencoder can be used as a replicator neural network
 Use a simple feedforward neural network with a single hidden layer to predict the class
 4 input nodes ---> hidden layer ---> hidden layer ---> .... ---> 3 output nodes
 """
@@ -12,7 +11,7 @@ from sklearn.model_selection import train_test_split
 
 # Enter number of nodes in each fully connected layer
 # h_size is a list that holds the number of nodes in each layer
-h_size = [512, 128, 512]
+h_size = [256, 256, 256]
 num_epochs = 15000
 RANDOM_SEED = 37
 tf.set_random_seed(RANDOM_SEED)
@@ -56,7 +55,7 @@ def json_pull():
             if j != 0 and trainmatx[j, i] == trainmatx[j-1, i]:
                 if j == num_meas-1:
                     zerostdarr.append(i)
-            elif trainmatx[j, i] != trainmatx[j-1,i]:
+            elif trainmatx[j, i] != trainmatx[j-1, i]:
                 break
     trainmatx = np.delete(trainmatx, zerostdarr, axis=1)
     print("Number of measurements:", trainmatx.shape[0], "Number of features:", trainmatx.shape[1])
@@ -162,7 +161,7 @@ def main():
         # test_accuracy = np.mean(np.argmax(test_y, axis=1) ==
         #                     sess.run(predict, feed_dict={X: test_X, y: test_y}))
 
-        if epoch%50==0:
+        if (epoch+1)%50==0:
             print("Epoch = %d, train accuracy = %.2f%%, test accuracy = %.2f%%"
                   % (epoch + 1, 100. * train_accuracy, 100. * test_accuracy))
 
