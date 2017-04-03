@@ -7,7 +7,7 @@ import tensorflow as tf
 import numpy as np
 import json
 import math
-from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
 # Enter number of nodes in each fully connected layer
 # h_size is a list that holds the number of nodes in each layer
@@ -67,10 +67,12 @@ def json_pull():
 
 
     # Define the test set
-    all_X = trainmatx
-    all_Y = trainmatx
+    train_X = trainmatx[0:51, :]
+    test_X = trainmatx[51:1000, :]
+    train_y = train_X
+    test_y = test_X
 
-    return train_test_split(all_X, all_Y, test_size=0.2, random_state=RANDOM_SEED)
+    return train_X, test_X, train_y, test_y
 
 def select_features(feature_str):
     """ 4097 frequency bins in the frequency array """
@@ -158,30 +160,21 @@ def main():
         output_train = sess.run(predict, feed_dict={X: train_X, y: train_y})
         output_test = sess.run(predict, feed_dict={X: test_X, y: test_y})
         train_accuracy = np.ndarray.mean(1. - abs(output_train - train_X))
-        # train_accuracy = np.mean(np.argmax(train_y, axis=1) ==
-        #                          sess.run(predict, feed_dict={X: train_X, y: train_y}))
-        test_accuracy  = np.ndarray.mean(1. - abs(output_test - test_X))
-        min_accuracy   = np.ndarray.min(1. -abs(output_test-test_X))
 
-        # train_accuracy = train_y/sess.run(predict, feed_dict={X: train_X, y: train_y}))
-        # test_accuracy = np.mean(np.argmax(test_y, axis=1) ==
-        #                     sess.run(predict, feed_dict={X: test_X, y: test_y}))
-
-        if (epoch+1)%1==0:
-            print("Epoch = %d, train accuracy = %.2f%%, test accuracy = %.2f%%, min accuracy = %.2f%%"
-                  % (epoch + 1, 100. * train_accuracy, 100. * test_accuracy, 100. * min_accuracy))
-
-    # Save the weights if you would like into a csv file. Need to write an eval function
-    # weights0 = wts[0].eval()
-    # weights1 = wts[1].eval()
-    # weights2 = wts[2].eval()
-    # weights3 = wts[3].eval()
-    # np.savetxt('weights0.csv', weights0, fmt='%.18e', delimiter=',')
-    # np.savetxt('weights1.csv', weights1, fmt='%.18e', delimiter=',')
-    # np.savetxt('weights2.csv', weights2, fmt='%.18e', delimiter=',')
-    # np.savetxt('weights3.csv', weights3, fmt='%.18e', delimiter=',')
+        if (epoch+1)%50==0:
+            print("Epoch = %d, train accuracy = %.2f%%"
+                  % (epoch + 1, 100. * train_accuracy))
     sess.close()
 
+    output_avg = np.zeros((1, 900))
+    output_test = 100. * (1. - abs(output_test - test_X))
+    for i in range(900):
+        output_avg[0][i] = np.ndarray.mean(output_test[i, :])
+
+    t = np.arange(1, 901, 1)
+    output_avg = np.squeeze(np.asarray(output_avg))
+    plt.plot(t, output_avg, 'bo')
+    plt.show()
 
 if __name__ == '__main__':
     main()

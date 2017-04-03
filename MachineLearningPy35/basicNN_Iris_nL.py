@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 
 # Enter number of nodes in each fully connected layer
 # h_size is a list that holds the number of nodes in each layer
-h_size = [80, 20, 3, 20, 80]
+h_size = [80, 80]
 num_epochs = 100
 RANDOM_SEED = 60
 tf.set_random_seed(RANDOM_SEED)

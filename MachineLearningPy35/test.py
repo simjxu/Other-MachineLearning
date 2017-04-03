@@ -1,10 +1,9 @@
-import json
+import matplotlib.pyplot as plt
+plt.plot([1,2,3,4])
+plt.show()
 
-jfile = open("C:\\Users\\Simon\\Documents\\Data\\measurement_data_40_L3_z.json", "r")
-json_dict = json.loads(jfile.read())
-
-print(json_dict['measurements'][0]['data']['z']['frequency_domain']['amps'][2])
-
+plt.plot([3,4,5,6,7])
+plt.show()
 
 #-----------------------------------------------------------------------------------------------
 # import tensorflow as tf
