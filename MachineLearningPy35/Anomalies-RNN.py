@@ -11,10 +11,8 @@ import matplotlib.pyplot as plt
 
 # Enter number of nodes in each fully connected layer
 # h_size is a list that holds the number of nodes in each layer
-h_size = [64, 64, 64]
-num_epochs = 15000
-RANDOM_SEED = 37
-tf.set_random_seed(RANDOM_SEED)
+h_size = [512]
+num_epochs = 150
 
 jfile = open("C:\\Users\\Simon\\Documents\\Data\\measurement_data_40_L3_z.json", "r")
 json_dict = json.loads(jfile.read())
@@ -28,23 +26,22 @@ def json_pull():
     featrs will be a tuple of features we would like to add to the training matrix.
     """
     num_meas = len(json_dict['measurements'])
-    num_feat = 8
+    num_feat = 700
 
     # Define the training set
+    timestmps = ['a' for row in range(num_meas)]
     trainmatx = np.matrix([[0.0 for col in range(num_feat)] for row in range(num_meas)])
     for i in range(num_meas):
-        trainmatx[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['p2p']
-        trainmatx[i, 1] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
-        trainmatx[i, 2] = json_dict['measurements'][i]['data']['z']['time_domain_features']['peak']
-        trainmatx[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_1x']
-        trainmatx[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_2x']
-        trainmatx[i, 5] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
-        trainmatx[i, 6] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
-        trainmatx[i, 7] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x_to_10x_sum']
-        # for j in range(num_feat):
-        #     trainmatx[i, j] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][j]
+        timestmps[i] = json_dict['measurements'][i]['timestamp']
+        # trainmatx[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
+        # trainmatx[i, 1] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_1x']
+        # trainmatx[i, 2] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_2x']
+        # trainmatx[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
+        # trainmatx[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x_to_10x_sum']
+        for j in range(num_feat):
+            trainmatx[i, j] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][j]
 
-    # Identify the NaNs in the matrix
+    # Identify and remove all the NaNs in the matrix
     nanarr = []
     for i in range(trainmatx.shape[0]):
         for j in range(num_feat):
@@ -52,6 +49,7 @@ def json_pull():
                 nanarr.append(i)
                 break
     trainmatx = np.delete(trainmatx, nanarr, axis=0)
+    timestmps = [i for j, i in enumerate(timestmps) if j not in nanarr]
 
     # Identify and remove all columns that have the same value
     zerostdarr = []
@@ -63,16 +61,22 @@ def json_pull():
             elif trainmatx[j, i] != trainmatx[j-1, i]:
                 break
     trainmatx = np.delete(trainmatx, zerostdarr, axis=1)
-    print("Number of measurements:", trainmatx.shape[0], "Number of features:", trainmatx.shape[1])
 
+    print("Number of measurements:", trainmatx.shape[0], "Number of features:", trainmatx.shape[1])
+    print("Number of timestamps:", len(timestmps))
 
     # Define the test set
-    train_X = trainmatx[0:51, :]
-    test_X = trainmatx[51:1000, :]
+    train_X = trainmatx[0:1000, :]
+    test_X = trainmatx[0:1000, :]
     train_y = train_X
     test_y = test_X
 
-    return train_X, test_X, train_y, test_y
+    # t = np.arange(1, 1000-50, 1)
+    # print(t.shape)
+    # print(test_X.shape)
+    # plt.plot(t, test_X[:, 1], 'ro')
+    # plt.show()
+    return train_X, test_X, train_y, test_y, timestmps
 
 def select_features(feature_str):
     """ 4097 frequency bins in the frequency array """
@@ -103,7 +107,8 @@ def forwardprop(A, B):
     return h
 
 def main():
-    train_X, test_X, train_y, test_y = json_pull()
+    train_X, test_X, train_y, test_y, timestmps = json_pull()
+    test_X_orig = test_X
     train_X = normalize(train_X)
     test_X = normalize(test_X)
     train_y = normalize(train_y)
@@ -142,7 +147,6 @@ def main():
     # Set up training using Gradient Descent Optimizer
     updates = tf.train.GradientDescentOptimizer(0.1).minimize(cost)
 
-    # # Set up training using Gradient Descent Optimizer
     # # Alternative setup using ADAM Optimizer
     # updates = tf.train.AdamOptimizer(0.001).minimize(cost)
 
@@ -166,15 +170,30 @@ def main():
                   % (epoch + 1, 100. * train_accuracy))
     sess.close()
 
-    output_avg = np.zeros((1, 900))
-    output_test = 100. * (1. - abs(output_test - test_X))
-    for i in range(900):
-        output_avg[0][i] = np.ndarray.mean(output_test[i, :])
+    # Plotting the "health scores" of each of the test points
+    num_testmeas = output_test.shape[0]
+    output_avg = np.zeros((num_testmeas, 1))
+    output_test = 100. * (output_test/test_X)
+    for i in range(num_testmeas):
+        output_avg[i, 0] = np.ndarray.max(output_test[i, :])
 
-    t = np.arange(1, 901, 1)
-    output_avg = np.squeeze(np.asarray(output_avg))
+    maxval = np.argmax(output_avg)
+    minval = np.argmin(output_avg)
+    print("max index:", maxval)
+    print("max index time:", timestmps[maxval])
+    print("min index:", minval)
+    print("min index time:", timestmps[minval])
+    # # Plot the result of the anomaly detection using replicator network
+    t = np.arange(1, num_testmeas+1, 1)
+    output_avg = np.squeeze(np.asarray(output_avg))                         # Convert to an array
     plt.plot(t, output_avg, 'bo')
+    plt.ylim(0, 1000000)
     plt.show()
+
+    # # Also plot RMS to see how that differs
+    # output_rms = np.squeeze(np.asarray(test_X_orig[0:num_testmeas, 1]))     # Convert to an array
+
+
 
 if __name__ == '__main__':
     main()

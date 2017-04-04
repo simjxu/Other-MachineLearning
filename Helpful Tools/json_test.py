@@ -1,5 +1,6 @@
 import json
-import csv
+import numpy as np
+import matplotlib.pyplot as plt
 
 # 'r' mode for reading, 'w' mode for writing, read and write 'r+', append 'a'
 # jsonfile = open('C:\Users\Simon\Desktop\Petasense\Data\measurement_data_40_L3_z.json', 'r')
@@ -15,10 +16,26 @@ import csv
 #     json.dump(row, jsonfile)
 #     jsonfile.write('\n')
 
-f = open("measurement_data_40_L3_z.json", "r")
+f = open("C:\\Users\\Simon\\Documents\\Data\\measurement_data_40_L3_z.json", "r")
 s = f.read()
 json_dict = json.loads(s)
 
+num_feat = 8
+num_meas = 1000
+trainmatx = np.matrix([[0.0 for col in range(num_feat)] for row in range(num_meas)])
+for i in range(num_meas):
+    trainmatx[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['p2p']
+    trainmatx[i, 1] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
+    trainmatx[i, 2] = json_dict['measurements'][i]['data']['z']['time_domain_features']['peak']
+    trainmatx[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_1x']
+    trainmatx[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_2x']
+    trainmatx[i, 5] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
+    trainmatx[i, 6] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
+    trainmatx[i, 7] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x_to_10x_sum']
+
+t = np.arange(1, num_meas+1, 1)
+plt.plot(t, trainmatx[:,1], 'ro')
+plt.show()
 # Only index on the measurement number (0 to 1117)
 # print(json_dict['measurements'][0]['timestamp'])
 # print(json_dict['measurements'][0]['data']['z']['time_domain_features']['crest_factor'])
