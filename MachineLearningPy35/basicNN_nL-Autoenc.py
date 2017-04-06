@@ -28,18 +28,21 @@ def json_pull():
     featrs will be a tuple of features we would like to add to the training matrix.
     """
     num_meas = len(json_dict['measurements'])
-    num_feat = 8
+    num_feat = 9
+
+    # Sort by time stamp
+
 
     # Define the training set
     trainmatx = np.matrix([[0.0 for col in range(num_feat)] for row in range(num_meas)])
     for i in range(num_meas):
-        trainmatx[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['p2p']
-        trainmatx[i, 1] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
-        trainmatx[i, 2] = json_dict['measurements'][i]['data']['z']['time_domain_features']['peak']
-        trainmatx[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_1x']
-        trainmatx[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_2x']
-        trainmatx[i, 5] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
-        trainmatx[i, 6] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
+        trainmatx[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
+        trainmatx[i, 1] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_1x']
+        trainmatx[i, 2] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_2x']
+        trainmatx[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
+        trainmatx[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_1x']
+        trainmatx[i, 5] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_2x']
+        trainmatx[i, 6] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x']
         trainmatx[i, 7] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x_to_10x_sum']
         # for j in range(num_feat):
         #     trainmatx[i, j] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][j]
