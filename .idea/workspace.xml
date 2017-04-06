@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="baa1ecfa-c760-45d9-aa2e-291ecac5450c" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/MachineLearningPy35/weights0.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/MachineLearningPy35/weights1.csv" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/MachineLearningPy35/GaussMixModel.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MachineLearningPy35/Anomalies-RNN.py" afterPath="$PROJECT_DIR$/MachineLearningPy35/Anomalies-RNN.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MachineLearningPy35/basicNN_nL-Autoenc.py" afterPath="$PROJECT_DIR$/MachineLearningPy35/basicNN_nL-Autoenc.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MachineLearningPy35/test.py" afterPath="$PROJECT_DIR$/MachineLearningPy35/test.py" />
     </list>
     <ignored path="Other-MachineLearning.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,13 +36,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Anomalies-RNN.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Anomalies-RNN.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MachineLearningPy35/Anomalies-RNN.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+            <state relative-caret-position="-308">
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="33" />
               <folding>
-                <element signature="e#346#369#0" expanded="true" />
                 <marker date="1491510997218" expanded="true" signature="7913:8054" ph="..." />
               </folding>
             </state>
@@ -78,20 +73,32 @@
       <file leaf-file-name="NumpyMatrixHelp.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Helpful Tools/NumpyMatrixHelp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
+            <state relative-caret-position="22">
               <caret line="14" column="14" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="json_test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Helpful Tools/json_test.py">
+      <file leaf-file-name="Kmeans_MixGauss.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Kmeans_MixGauss.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="726">
-              <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
+            <state relative-caret-position="1936">
+              <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GaussMixModel.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/MachineLearningPy35/GaussMixModel.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2068">
+              <caret line="94" column="21" selection-start-line="94" selection-start-column="21" selection-end-line="94" selection-end-column="21" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -125,6 +132,8 @@
         <option value="$PROJECT_DIR$/MachineLearningPy35/basicNN_nL-Autoenc.py" />
         <option value="$PROJECT_DIR$/MachineLearningPy35/test.py" />
         <option value="$PROJECT_DIR$/MachineLearningPy35/Anomalies-RNN.py" />
+        <option value="$PROJECT_DIR$/Kmeans_MixGauss.py" />
+        <option value="$PROJECT_DIR$/MachineLearningPy35/GaussMixModel.py" />
       </list>
     </option>
   </component>
@@ -299,7 +308,7 @@
       <recent name="C:\Users\Simon\Documents\GitHub\Other-MachineLearning\MachineLearningPy35\data" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Anomalies-RNN">
+  <component name="RunManager" selected="Python.GaussMixModel">
     <configuration default="false" name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -334,23 +343,6 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="basicNN_Iris_nL" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/MachineLearningPy35" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Other-MachineLearning" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MachineLearningPy35/basicNN_Iris_nL.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="Anomalies-RNN" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -381,6 +373,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="Other-MachineLearning" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Helpful Tools/json_test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="GaussMixModel" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/MachineLearningPy35" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Other-MachineLearning" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MachineLearningPy35/GaussMixModel.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -522,17 +531,17 @@
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.test" />
       <item index="1" class="java.lang.String" itemvalue="Python.basicNN_nL-Autoenc" />
-      <item index="2" class="java.lang.String" itemvalue="Python.basicNN_Iris_nL" />
-      <item index="3" class="java.lang.String" itemvalue="Python.Anomalies-RNN" />
-      <item index="4" class="java.lang.String" itemvalue="Python.json_test" />
+      <item index="2" class="java.lang.String" itemvalue="Python.Anomalies-RNN" />
+      <item index="3" class="java.lang.String" itemvalue="Python.json_test" />
+      <item index="4" class="java.lang.String" itemvalue="Python.GaussMixModel" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Anomalies-RNN" />
-        <item index="1" class="java.lang.String" itemvalue="Python.test" />
-        <item index="2" class="java.lang.String" itemvalue="Python.json_test" />
-        <item index="3" class="java.lang.String" itemvalue="Python.basicNN_nL-Autoenc" />
-        <item index="4" class="java.lang.String" itemvalue="Python.basicNN_Iris_nL" />
+        <item index="0" class="java.lang.String" itemvalue="Python.GaussMixModel" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Anomalies-RNN" />
+        <item index="2" class="java.lang.String" itemvalue="Python.test" />
+        <item index="3" class="java.lang.String" itemvalue="Python.json_test" />
+        <item index="4" class="java.lang.String" itemvalue="Python.basicNN_nL-Autoenc" />
       </list>
     </recent_temporary>
   </component>
@@ -612,30 +621,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Helpful Tools/NumpyMatrixHelp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="29" column="24" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MachineLearningPy35/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3938">
-          <caret line="183" column="0" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="62" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MachineLearningPy35/basicNN_nL.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MachineLearningPy35/basicNN_nL-Autoenc.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -933,17 +918,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Helpful Tools/NumpyMatrixHelp.py">
+    <entry file="file://$PROJECT_DIR$/MachineLearningPy35/basicNN_mnist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="14" column="14" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
+        <state relative-caret-position="616">
+          <caret line="28" column="22" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MachineLearningPy35/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Helpful Tools/json_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="726">
+        <state relative-caret-position="22">
           <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
@@ -951,10 +946,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MachineLearningPy35/basicNN_mnist.py">
+    <entry file="file://$PROJECT_DIR$/Kmeans_MixGauss_1-2-2017.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="28" column="22" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Kmeans_MixGauss.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1936">
+          <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Helpful Tools/NumpyMatrixHelp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="14" column="14" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
           <folding />
         </state>
       </provider>
@@ -969,23 +984,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MachineLearningPy35/test.py">
+    <entry file="file://$PROJECT_DIR$/MachineLearningPy35/Anomalies-RNN.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        <state relative-caret-position="-308">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="33" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <marker date="1491510997218" expanded="true" signature="7913:8054" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MachineLearningPy35/Anomalies-RNN.py">
+    <entry file="file://$PROJECT_DIR$/MachineLearningPy35/GaussMixModel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+        <state relative-caret-position="2068">
+          <caret line="94" column="21" selection-start-line="94" selection-start-column="21" selection-end-line="94" selection-end-column="21" />
           <folding>
-            <element signature="e#346#369#0" expanded="true" />
-            <marker date="1491510997218" expanded="true" signature="7913:8054" ph="..." />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
