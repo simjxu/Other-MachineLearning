@@ -1,11 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-R = np.matrix(((3.,5.,7.,9.,9.,7.,5.,3.),(3.,5.,7.,9.,9.,7.,5.,3.)))
-S = np.copy(R[:,0:5])
-S[0,0] = S[0,0]+1
-print(R)
-print(S)
-
+A =
 
 #-----------------------------------------------------------------------------------------------
 # import tensorflow as tf
