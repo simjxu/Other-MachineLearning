@@ -15,23 +15,23 @@ def json_pull():
     json_dict = json.loads(jfile.read())
 
     num_meas = len(json_dict['measurements'])
-    num_feat = 600
+    num_feat = 8
 
     # Define the training set
     timestmps = ['a' for row in range(num_meas)]
     trainmatx = np.matrix([[0.0 for col in range(num_feat)] for row in range(num_meas)])
     for i in range(num_meas):
         timestmps[i] = json_dict['measurements'][i]['timestamp']
-        # trainmatx[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
-        # trainmatx[i, 1] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_1x']
-        # trainmatx[i, 2] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_2x']
-        # trainmatx[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
-        # trainmatx[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_1x']
-        # trainmatx[i, 5] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_2x']
-        # trainmatx[i, 6] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x']
-        # trainmatx[i, 7] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x_to_10x_sum']
-        for j in range(num_feat):
-            trainmatx[i, j] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][j]
+        trainmatx[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
+        trainmatx[i, 1] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_1x']
+        trainmatx[i, 2] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_2x']
+        trainmatx[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
+        trainmatx[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_1x']
+        trainmatx[i, 5] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_2x']
+        trainmatx[i, 6] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x']
+        trainmatx[i, 7] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x_to_10x_sum']
+        # for j in range(num_feat):
+        #     trainmatx[i, j] = json_dict['measurements'][i]['data']['z']['frequency_domain']['amps'][j]
 
     # Sort timestamp list and also get the sort indices
     sortidx = [i[0] for i in sorted(enumerate(timestmps), key=lambda x: x[1])]
@@ -87,6 +87,8 @@ def main():
     GM_means = model.means_
     GM_stds = model.covariances_
 
+    print(GM_means)
+
     diag = np.matrix([0. for row in range(GM_stds.shape[1])])
     scoreval = [0. for row in range(num_meas)]
     for i in range(num_meas):
@@ -104,21 +106,22 @@ def main():
         dev_arr = np.squeeze(np.asarray(dev_arr))
         # Output the score, decide on max or mean, or Mahalanobis distance
         # scoreval[i] = np.ndarray.max(dev_arr)
-        p_or_n = np.ndarray.mean(dev_arr)
+        p_or_n = np.ndarray.mean(dev_arr)/500
         # scoreval[i] = model.score(curr_meas)
         scoreval[i] = np.matrix.item(np.sqrt((curr_meas-GM_means[pred_cluster, :])
                                * np.linalg.inv(GM_stds[pred_cluster, :, :])
                                * np.transpose(curr_meas-GM_means[pred_cluster, :])))*p_or_n      # Mahalanobis distance
 
-        # if i == 195:
-        #     print("This is", i)
-        #     print("curr_meas:", curr_meas)
-        #     print("GMMeans:", GM_means[pred_cluster, :])
-        #     print("difference:", curr_meas - GM_means[pred_cluster, :])
-        #
-        #     print("stdevs:", diag)
-        #     print(dev_arr)
-        #
+        if i == 748:
+            print("This is", i)
+            print("curr_meas:", curr_meas)
+            print("GMMeans:", GM_means[pred_cluster, :])
+            print("p_or_n:", p_or_n)
+            print("covar multiply:", (curr_meas-GM_means[pred_cluster, :])*np.linalg.inv(GM_stds[pred_cluster, :, :])
+                  *np.transpose(curr_meas-GM_means[pred_cluster, :]))
+            print("stdevs:", diag)
+            print(dev_arr)
+
         # if i == 58:
         #     print("This is", i)
         #     print("curr_meas:", curr_meas)
@@ -128,10 +131,16 @@ def main():
         #     print("stdevs:", diag)
         #     print(dev_arr)
 
-    # print(scoreval)
+
     plt.plot(scoreval, 'bo')
     plt.show()
 
+    inpval = int(input('Enter measurement number:'))
+    print(np.matrix((test_X[inpval, :]-GM_means[0, :]))*np.linalg.inv(GM_stds[0, :, :]))
+    print('Feature number', np.argmax((np.matrix(test_X[inpval, :])-GM_means[pred_cluster, :])
+                                      *np.linalg.inv(GM_stds[pred_cluster, :, :])),
+          'contributed deviation value of', np.max((np.matrix(test_X[inpval, :])-GM_means[pred_cluster, :])
+                                      *np.linalg.inv(GM_stds[pred_cluster, :, :])))
 
 if __name__ == '__main__':
     main()

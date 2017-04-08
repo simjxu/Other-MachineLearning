@@ -13,7 +13,7 @@ from time import gmtime, strftime
 
 # Enter number of nodes in each fully connected layer
 # h_size is a list that holds the number of nodes in each layer
-h_size = [30, 3, 30]
+h_size = [35, 6, 35]
 num_epochs = 2500
 
 ############################################################################
@@ -82,7 +82,7 @@ def json_pull():
     print("Number of timestamps:", len(timestmps))
 
     # Define the test set. BE CAREFUL, A SEPARATE COPY OF THE MATRIX IS NOT CREATED, TRAIN_X AND TEST_X REFERENCE SAME
-    train_X = np.copy(trainmatx[0:400, :])
+    train_X = np.copy(trainmatx[0:200, :])
     test_X = np.copy(trainmatx[0:1050, :])
     train_y = train_X
     test_y = test_X
@@ -206,7 +206,7 @@ def main():
     output_test = np.square(output_test - test_X)
     output_avg = np.zeros((num_testmeas, 1))
     for i in range(num_testmeas):
-        output_avg[i, 0] = np.ndarray.mean(output_test[i, :])
+        output_avg[i, 0] = np.ndarray.max(output_test[i, :])
     maxval = np.argmax(output_avg)
     minval = np.argmin(output_avg)
 
