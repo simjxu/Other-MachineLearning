@@ -87,7 +87,7 @@ def main():
     GM_means = model.means_
     GM_stds = model.covariances_
 
-    print(GM_means)
+    print(GM_stds)
 
     diag = np.matrix([0. for row in range(GM_stds.shape[1])])
     scoreval = [0. for row in range(num_meas)]
@@ -112,9 +112,12 @@ def main():
                                * np.linalg.inv(GM_stds[pred_cluster, :, :])
                                * np.transpose(curr_meas-GM_means[pred_cluster, :])))*p_or_n      # Mahalanobis distance
 
-        if i == 748:
+        if i == 2:
             print("This is", i)
+            print(timestmps[i])
+            print("diag:", diag)
             print("curr_meas:", curr_meas)
+            print("curr_meas dev:", curr_meas - GM_means[pred_cluster, :])
             print("GMMeans:", GM_means[pred_cluster, :])
             print("p_or_n:", p_or_n)
             print("covar multiply:", (curr_meas-GM_means[pred_cluster, :])*np.linalg.inv(GM_stds[pred_cluster, :, :])
@@ -122,25 +125,29 @@ def main():
             print("stdevs:", diag)
             print(dev_arr)
 
-        # if i == 58:
-        #     print("This is", i)
-        #     print("curr_meas:", curr_meas)
-        #     print("GMMeans:", GM_means[pred_cluster, :])
-        #     print("difference:", curr_meas - GM_means[pred_cluster, :])
-        #
-        #     print("stdevs:", diag)
-        #     print(dev_arr)
-
+        if i == 504:
+            print("This is", i)
+            print(timestmps[i])
+            print("diag:", diag)
+            print("curr_meas:", curr_meas)
+            print("curr_meas dev:", curr_meas - GM_means[pred_cluster, :])
+            print("GMMeans:", GM_means[pred_cluster, :])
+            print("p_or_n:", p_or_n)
+            print("covar multiply:",
+                  (curr_meas - GM_means[pred_cluster, :]) * np.linalg.inv(GM_stds[pred_cluster, :, :])
+                  * np.transpose(curr_meas - GM_means[pred_cluster, :]))
+            print("stdevs:", diag)
+            print(dev_arr)
 
     plt.plot(scoreval, 'bo')
     plt.show()
 
-    inpval = int(input('Enter measurement number:'))
-    print(np.matrix((test_X[inpval, :]-GM_means[0, :]))*np.linalg.inv(GM_stds[0, :, :]))
-    print('Feature number', np.argmax((np.matrix(test_X[inpval, :])-GM_means[pred_cluster, :])
-                                      *np.linalg.inv(GM_stds[pred_cluster, :, :])),
-          'contributed deviation value of', np.max((np.matrix(test_X[inpval, :])-GM_means[pred_cluster, :])
-                                      *np.linalg.inv(GM_stds[pred_cluster, :, :])))
+    # inpval = int(input('Enter measurement number:'))
+    # print(np.matrix((test_X[inpval, :]-GM_means[0, :]))*np.linalg.inv(GM_stds[0, :, :]))
+    # print('Feature number', np.argmax((np.matrix(test_X[inpval, :])-GM_means[pred_cluster, :])
+    #                                   *np.linalg.inv(GM_stds[pred_cluster, :, :])),
+    #       'contributed deviation value of', np.max((np.matrix(test_X[inpval, :])-GM_means[pred_cluster, :])
+    #                                   *np.linalg.inv(GM_stds[pred_cluster, :, :])))
 
 if __name__ == '__main__':
     main()

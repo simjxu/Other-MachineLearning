@@ -6,7 +6,7 @@ import math
 import matplotlib.pyplot as plt
 from itertools import cycle
 
-jfile = open("../data/measurement_data_40_L3_z.json", "r")
+jfile = open("C:\\Users\\Simon\\Documents\\Data\\measurement_data_40_L3_z.json", "r")
 json_dict = json.loads(jfile.read())
 ############################################################################
 

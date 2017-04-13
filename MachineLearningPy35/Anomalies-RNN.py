@@ -206,7 +206,7 @@ def main():
     output_test = np.square(output_test - test_X)
     output_avg = np.zeros((num_testmeas, 1))
     for i in range(num_testmeas):
-        output_avg[i, 0] = np.ndarray.max(output_test[i, :])
+        output_avg[i, 0] = np.ndarray.mean(output_test[i, :])
     maxval = np.argmax(output_avg)
     minval = np.argmin(output_avg)
 
