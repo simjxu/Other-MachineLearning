@@ -17,20 +17,23 @@ def json_pull():
     train_mat will be the input matrix which we would like to add features to
     featrs will be a tuple of features we would like to add to the training matrix.
     """
-    num_meas = 1000  # len(json_dict['measurements'])
-    num_feat = 8
+    num_meas = 1117  # len(json_dict['measurements'])
+    num_feat = 2
 
     # Define the training set
     datamat = np.matrix([[0.0 for col in range(num_feat)] for row in range(num_meas)])
     for i in range(num_meas):
-        datamat[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['p2p']
-        datamat[i, 1] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
-        datamat[i, 2] = json_dict['measurements'][i]['data']['z']['time_domain_features']['peak']
-        datamat[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_1x']
-        datamat[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_2x']
-        datamat[i, 5] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
-        datamat[i, 6] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
-        datamat[i, 7] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x_to_10x_sum']
+        datamat[i, 0] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_2x']
+        datamat[i, 1] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x']
+
+        # datamat[i, 0] = json_dict['measurements'][i]['data']['z']['time_domain_features']['rms']
+        # datamat[i, 1] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_1x']
+        # datamat[i, 2] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_2x']
+        # datamat[i, 3] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['output_shaft_3x']
+        # datamat[i, 4] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_1x']
+        # datamat[i, 5] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_2x']
+        # datamat[i, 6] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x']
+        # datamat[i, 7] = json_dict['measurements'][i]['data']['z']['frequency_domain_features']['shaft_3x_to_10x_sum']
 
     nanarr = []
     for i in range(datamat.shape[0]):
@@ -64,17 +67,17 @@ datamat = json_pull()
 # print(evals/np.sum(evals))
 
 
-#----------------------------------------------------------------------
-# Run PCA from SKLEARN
-pca = decomposition.PCA(n_components=2)
-pca.fit(datamat)
-datamat = pca.transform(datamat)
-print(pca.explained_variance_ratio_)
+# #----------------------------------------------------------------------
+# # Run PCA from SKLEARN
+# pca = decomposition.PCA(n_components=2)
+# pca.fit(datamat)
+# datamat = pca.transform(datamat)
+# print(pca.explained_variance_ratio_)
 
 
 #----------------------------------------------------------------------
 # Run MeanShift
-bandwidth = estimate_bandwidth(datamat, quantile=0.2, n_samples=1000)
+bandwidth = estimate_bandwidth(datamat, quantile=0.3)
 ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
 ms.fit(datamat)
 labels = ms.labels_

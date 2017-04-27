@@ -1,7 +1,54 @@
-import matplotlib.pyplot as plt
+from math import ceil
+from scipy import *
 import numpy as np
-A =
+import matplotlib.pyplot as plt
 
+
+def czt(x, m=None, w=None, a=None):
+    # Translated from GNU Octave's czt.m
+
+    n = len(x)
+    if m is None:
+        m = n
+    if w is None:
+        w = exp(-2j * pi / m)
+    if a is None:
+        a = 1
+
+    chirp = w ** (arange(1 - n, max(m, n)) ** 2 / 2.0)
+    N2 = int(2 ** ceil(log2(m + n - 1)))  # next power of 2
+    xp = append(x * a ** -arange(n) * chirp[n - 1 : n + n - 1], zeros(N2 - n))
+    ichirpp = append(1 / chirp[: m + n - 1], zeros(N2 - (m + n - 1)))
+    r = ifft(fft(xp) * fft(ichirpp))
+    return r[n - 1: m + n - 1] * chirp[n - 1: m + n - 1]
+
+
+def get_signal(sampling_size, sampling_rate):
+    t = 1.0 / sampling_rate
+    x = np.linspace(0.0, sampling_size * t, sampling_size)
+    y = np.sin(50.0 * 2.0*np.pi*x) + 0.5*np.sin(80.0 * 2.0*np.pi*x)
+    return y * np.hanning(sampling_size)
+
+
+def plot_spectrum(y, sr, spectrum_type='fft'):
+    ss = len(y)
+    xf = np.linspace(0.0, sr/2, ss//2)
+    print(len(xf))
+    if spectrum_type == 'czt':
+        yf = czt(y)
+        yf = yf[0:ss//2]
+    else:
+        yf = np.fft.rfft(y)
+        yf = yf[1:]
+
+    yf *= 2.0
+    plt.plot(xf, 2.0/ss * np.abs(yf), 'bo')
+    plt.show()
+
+plot_spectrum(get_signal(8192, 20000), 20000)
+plot_spectrum(get_signal(10000, 20000), 20000)
+plot_spectrum(get_signal(2 * 8192, 20000), 20000)
+plot_spectrum(get_signal(20000, 20000), 20000)
 #-----------------------------------------------------------------------------------------------
 # import tensorflow as tf
 #
