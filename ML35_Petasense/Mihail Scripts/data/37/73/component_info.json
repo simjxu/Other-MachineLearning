@@ -1,0 +1,1 @@
+{"line_frequency": 60, "critical": {"Axial": 8.5, "Tangential": 8.5, "Radial": 8.5}, "power": 62.5, "warning": {"Axial": 5.5, "Tangential": 5.5, "Radial": 5.5}, "subtype": "ac_induction_motor", "foundation": "flexible", "type": "motor", "orientation": "horizontal", "speed": 3555.0, "vfd": false}
