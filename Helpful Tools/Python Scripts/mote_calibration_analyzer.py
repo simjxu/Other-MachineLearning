@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 cookies = {
     '_ga': 'GA1.2.354410958.1484069253',
     'mp_6236728f0c61399bdb15b5a17d1fbf1c_mixpanel': '^%^7B^%^22distinct_id^%^22^%^3A^%^20^%^22simon^%^40petasense.com^%^22^%^2C^%^22^%^24initial_referrer^%^22^%^3A^%^20^%^22^%^24direct^%^22^%^2C^%^22^%^24initial_referring_domain^%^22^%^3A^%^20^%^22^%^24direct^%^22^%^7D',
-    'session': '.eJw9z8FugkAUheFXaWbtYgDZmHQhGSSQ3ku0g5PLhlAchUE0ESwyxnevuuj-nC_576zYX3Rfs8W-PPZ6xopmxxZ39vHDFgxFzHOR1NDFFkQ2kVo1ZDYNyOWYRklHLlmwiUEbHNHWLZqWozhwVNiixDaVaz8VIQe76UBmN5K7FlRiQK1HdEOf3Py5iTnJl4QGI5qjXTq5iH2wtckFjSiCOo1oyjuYp9G2AbWtwYQ3NOSRCQypzCMJn-wxY2U1NL-6KKvqfD0N7xJnxnrd9835VLR6-i8DuTqCC97zPYCoJvzmnOzS-1Khh1E4pKJywNII5jCCjP2Xfu315W0yx5-zxx96eGZZ.DbEy_A.97UojoCmGcSI1iqrB-pvuxgfx00',
+    'session': '.eJw9j0GPgjAUhP_KpmcPWOVCsgd3C2TNvtdgqqS9EBYRbKkmgivU-N-368HrTOabmTspDpe6b0l0KLu-npHiuCfRnbz9kIiA_VrIPLHgdi0KCDhDDek2UOm6VdqEaDda2bVGV4UoWsvZdpQ6G1Fs56DRqDxeqHTTed0BA6d0PCphJmSJxTzpJEXNxSrkuWdaWCADCg59X0ORyhFY5qSrfGZ1kw41pjvvxROKveEi88paS7ozyMw7ecxIWQ3H37ooq-p8PQ3PJ_MZ6eu-P55Phamn1zOeZn7Rh1G6GUDES_UZBDyX7lsYKl02AGtuwMwk_WakcfhPv_b15ckk83BJHn9D2GhI.DdIoWw.8HV-UmGLLSrSopTRcxynMU8LVxg',
 }
 
 headers = {
@@ -27,7 +27,7 @@ headers = {
 }
 
 # Get the list of device ids
-file = open("data/P12-IDs.txt", 'r')
+file = open("data/P8-VM1-IDs.txt", 'r')
 device_ids = file.read().split("\n")
 num_ids = len(device_ids)
 num_meas = 15
